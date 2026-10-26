@@ -1,10 +1,10 @@
-export function GameCard() {
+export function GameCard({cover}: IGameCard) {
     return (
         <article className="card">
             <div className="card__cover">
-                <img src="..." alt="..." />
+                {cover && <img src ={cover.url} alt = {cover.alternativeText} />}
                 <span>Название</span>
-                <b className="card__rating">5</b>
+                {rating && <b className="card__rating">{rating}</b>}
             </div>
 
             <div className="card__body">
