@@ -1,21 +1,59 @@
-export function GameCard({cover}: IGameCard) {
+import { API_URL } from "../api"
+import { GENRE_LABELS, type IGame } from "../types"
+
+interface IGameCard extends IGame {}
+
+export function GameCard({
+    cover,
+    description,
+    rating,
+    price,
+    title,
+    releaseDate,
+    platforms,
+    genre
+}: IGameCard) {
     return (
         <article className="card">
             <div className="card__cover">
-                {cover && <img src ={cover.url} alt = {cover.alternativeText} />}
-                <span>Название</span>
+                {cover ? (
+                    <img
+                        src={API_URL + cover.url}
+                        alt={cover.alternativeText}
+                    />
+                ) : (
+                    <span>{title[0]}</span>
+                )}
                 {rating && <b className="card__rating">{rating}</b>}
             </div>
 
             <div className="card__body">
-                <h3>Название</h3>
-                <p className="card__meta">Жанр, год</p>
-                <p className="card__desc">Описание</p>
-                <p className="card__platforms">Платформы</p>
+                <h3>{title}</h3>
+                {
+                    genre && 
+                    <p className="card__meta">{GENRE_LABELS[genre]}</p>
+                }
+                {releaseDate && (
+                    <p className="card__meta">
+                        {new Date(releaseDate).getFullYear()}
+                    </p>
+                )}
+                {description && (
+                    <p className="card__desc">
+                        {description[0].children[0].text}
+                    </p>
+                )}
+                {platforms && (
+                    <p className="card__platforms">{platforms.join(" / ")}</p>
+                )}
             </div>
 
             <footer className="card__footer">
-                <strong className="free">Бесплатно</strong>
+                {price && (
+                    <strong className={`${price === 0 ? "free" : ""}`}>
+                        {price === 0 ? "Бесплатно" : price}
+                    </strong>
+                )}
                 <button className="link-btn">Удалить</button>
             </footer>
         </article>
